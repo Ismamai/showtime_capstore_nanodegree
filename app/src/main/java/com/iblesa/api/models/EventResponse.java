@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class OriginalTicketmasterResponseQuery {
+public class EventResponse {
 
     @SerializedName("_embedded")
     @Expose
@@ -58,10 +58,10 @@ public class OriginalTicketmasterResponseQuery {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OriginalTicketmasterResponseQuery) == false) {
+        if ((other instanceof EventResponse) == false) {
             return false;
         }
-        OriginalTicketmasterResponseQuery rhs = ((OriginalTicketmasterResponseQuery) other);
+        EventResponse rhs = ((EventResponse) other);
         return new EqualsBuilder().append(links, rhs.links).append(page, rhs.page).append(embedded, rhs.embedded).isEquals();
     }
 
