@@ -2,4 +2,5 @@
     <string name="app_name">Showtime</string>
     <string name="NO_INTERNET_CONNECTION">There is not internet connection. Please try later</string>
     <string name="ERROR_LOADING_DATA">There has been an error loading data</string>
+    <string name="LOCATION_IS_REQUIRED">Your location is needed to show you your nearest events</string>
 </resources>
