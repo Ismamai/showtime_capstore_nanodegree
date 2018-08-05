@@ -27,4 +27,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'commons-lang:commons-lang:2.4'
+    implementation 'com.ticketmaster.api:discovery-java:0.1.8'
 }
