@@ -3,6 +3,7 @@ package com.iblesa.showtime.main;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -13,6 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.iblesa.api.ApiClient;
 import com.iblesa.api.ApiService;
 import com.iblesa.api.models.EventResponse;
@@ -29,7 +33,14 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_ACCESS_COARSE_LOCATION = 1234;
+    private static final String LAST_LOCATION_LATITUDE = "LATITUDE";
+    private static final String LAST_LOCATION_LOGITUDE = "LONGITUDE";
     private static boolean locationEnabled = false;
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    private double mLatitude = Constants.DEFAULT_LOCATION_LAT;
+    private double mLongitude = Constants.DEFAULT_LOCATION_LON;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         String apiKey = getString(R.string.ticketmaster_api_key);
         checkLocationEnabled();
+
     }
 
     private void checkLocationEnabled() {
@@ -46,7 +58,23 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSION_ACCESS_COARSE_LOCATION);
         }
+//        new GoogleApiClient.Builder(this,this,)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    mLatitude = location.getLatitude();
+                    mLongitude = location.getLongitude();
+                    String message = String.format("My location is latitude %s and longitude %s", mLatitude, mLongitude);
+                    Log.d(Constants.TAG, message);
+                } else {
+                    Log.d(Constants.TAG, "Using default location");
+                }
+            }
+        });
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -117,6 +145,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadData(getString(R.string.ticketmaster_api_key));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble(LAST_LOCATION_LATITUDE, mLatitude);
+        outState.putDouble(LAST_LOCATION_LOGITUDE, mLongitude);
     }
 }
 

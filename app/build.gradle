@@ -36,4 +36,7 @@ dependencies {
     //To use RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 
+    //Google Location and Activity Recognition
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+
 }
