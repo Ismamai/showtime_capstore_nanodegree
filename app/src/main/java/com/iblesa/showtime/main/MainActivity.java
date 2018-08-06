@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         checkConnectivity();
         Retrofit apiClient = ApiClient.getClient();
         ApiService service = apiClient.create(ApiService.class);
-
-        Call<EventResponse> listCall = service.listEvents(key);
+        String latlong = mLatitude + "," + mLongitude;
+        Call<EventResponse> listCall = service.listEvents(key, latlong);
         listCall.enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadData(getString(R.string.ticketmaster_api_key));
     }
 
     @Override
