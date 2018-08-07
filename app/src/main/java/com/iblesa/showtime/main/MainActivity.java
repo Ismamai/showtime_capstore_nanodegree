@@ -11,6 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +27,8 @@ import com.iblesa.showtime.R;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,13 +45,21 @@ public class MainActivity extends AppCompatActivity {
     private double mLatitude = Constants.DEFAULT_LOCATION_LAT;
     private double mLongitude = Constants.DEFAULT_LOCATION_LON;
 
+    MainListEventsAdapter mAdapter;
+
+    @BindView(R.id.rv_events)
+    RecyclerView rvEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         String apiKey = getString(R.string.ticketmaster_api_key);
         checkLocationEnabled();
+        rvEvents.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new MainListEventsAdapter(this);
+        rvEvents.setAdapter(mAdapter);
 
     }
 
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d(Constants.TAG, "Using default location");
                 }
+                loadData();
             }
         });
     }
@@ -89,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadData(String key) {
+    private void loadData() {
+        String key = getString(R.string.ticketmaster_api_key);
         checkConnectivity();
         Retrofit apiClient = ApiClient.getClient();
         ApiService service = apiClient.create(ApiService.class);
@@ -108,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 String message = String.format("Setting events (%s) %s", size, events);
                 Log.d(Constants.TAG, message);
 
-//                mEventsListAdapter.setRecipes(eventResponse);
+                mAdapter.setEventResponse(eventResponse);
 
             }
 

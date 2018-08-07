@@ -3,4 +3,8 @@
     <string name="NO_INTERNET_CONNECTION">There is not internet connection. Please try later</string>
     <string name="ERROR_LOADING_DATA">There has been an error loading data</string>
     <string name="LOCATION_IS_REQUIRED">Your location is needed to show you your nearest events</string>
+    <string name="tv_events_label">Events near</string>
+    <string name="event_image">Event image</string>
+    <string name="open_venue_location">Show location</string>
+    <string name="event_item_name_label">Name</string>
 </resources>
