@@ -13,8 +13,12 @@ import android.widget.TextView;
 import com.iblesa.api.models.Embedded_;
 import com.iblesa.api.models.Event;
 import com.iblesa.api.models.EventResponse;
+import com.iblesa.api.models.Image;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +79,12 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
         }
 
         void bind(Event event) {
+
+            Picasso.get()
+                    .load(getImage(event))
+                    .placeholder(R.drawable.progress_image)
+                    .error(R.drawable.progress_image)
+                    .into(event_image);
             event_name.setText(event.getName());
             Embedded_ embedded = event.getEmbedded();
             if (embedded != null
@@ -82,6 +92,23 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
                     && embedded.getVenues().size() != 0) {
                 event_venue.setText(embedded.getVenues().get(0).getName());
             }
+
+        }
+
+        private String getImage(Event event) {
+            List<Image> images = event.getImages();
+            String smaller_image = null;
+            String ratio = "3_2";
+            int min_size = Integer.MAX_VALUE;
+            for (Image image : images) {
+                if (ratio.equals(image.getRatio())) {
+                    if (image.getWidth() < min_size) {
+                        min_size = image.getWidth();
+                        smaller_image = image.getUrl();
+                    }
+                }
+            }
+            return smaller_image;
         }
 
         @Override
