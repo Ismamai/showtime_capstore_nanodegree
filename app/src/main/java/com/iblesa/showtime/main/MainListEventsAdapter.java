@@ -80,19 +80,32 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
 
         void bind(Event event) {
 
+            String image = getImage(event);
             Picasso.get()
-                    .load(getImage(event))
+                    .load(image)
                     .placeholder(R.drawable.progress_image)
                     .error(R.drawable.progress_image)
                     .into(event_image);
-            event_name.setText(event.getName());
+            String eventName = event.getName();
+            event_name.setText(eventName);
+            String eventVenue = getVenue(event);
+            event_venue.setText(eventVenue);
+            String message = String.format("Data to show in recyclerview is event %s venue %s %s",
+                    eventName,
+                    eventVenue, image);
+            Log.d(Constants.TAG, message);
+
+        }
+
+        private String getVenue(Event event) {
             Embedded_ embedded = event.getEmbedded();
+            String result = null;
             if (embedded != null
                     && embedded.getVenues() != null
                     && embedded.getVenues().size() != 0) {
-                event_venue.setText(embedded.getVenues().get(0).getName());
+                result = embedded.getVenues().get(0).getName();
             }
-
+            return result;
         }
 
         private String getImage(Event event) {
