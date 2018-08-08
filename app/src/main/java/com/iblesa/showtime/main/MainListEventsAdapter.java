@@ -60,6 +60,11 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
         }
     }
 
+    public void clear() {
+        mEventResponse = null;
+        notifyDataSetChanged();
+    }
+
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.event_item_name)

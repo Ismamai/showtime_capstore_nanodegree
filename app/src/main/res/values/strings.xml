@@ -7,4 +7,5 @@
     <string name="event_image">Event image</string>
     <string name="open_venue_location">Show location</string>
     <string name="event_item_name_label">Name</string>
+    <string name="tv_events_app">Showtime</string>
 </resources>

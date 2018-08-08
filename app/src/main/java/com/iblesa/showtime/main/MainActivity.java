@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int PERMISSION_ACCESS_COARSE_LOCATION = 1234;
     private static final String LAST_LOCATION_LATITUDE = "LATITUDE";
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rv_events)
     RecyclerView rvEvents;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
         rvEvents.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MainListEventsAdapter(this);
         rvEvents.setAdapter(mAdapter);
+
+        mSwipeRefresh.setOnRefreshListener(this);
+
+        mSwipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 
     }
 
@@ -112,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         listCall.enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                mAdapter.clear();
                 EventResponse eventResponse = response.body();
                 int size = 0;
 
@@ -123,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(Constants.TAG, message);
 
                 mAdapter.setEventResponse(eventResponse);
+                mSwipeRefresh.setRefreshing(false);
 
             }
 
@@ -165,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putDouble(LAST_LOCATION_LATITUDE, mLatitude);
         outState.putDouble(LAST_LOCATION_LOGITUDE, mLongitude);
+    }
+
+    @Override
+    public void onRefresh() {
+        loadData();
     }
 }
 
