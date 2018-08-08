@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Promoter_ {
+public class Promoter_ implements Parcelable
+{
 
     @SerializedName("id")
     @Expose
@@ -18,6 +22,31 @@ public class Promoter_ {
     @SerializedName("description")
     @Expose
     private String description;
+    public final static Parcelable.Creator<Promoter_> CREATOR = new Creator<Promoter_>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Promoter_ createFromParcel(Parcel in) {
+            return new Promoter_(in);
+        }
+
+        public Promoter_[] newArray(int size) {
+            return (new Promoter_[size]);
+        }
+
+    }
+    ;
+
+    protected Promoter_(Parcel in) {
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.description = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Promoter_() {
+    }
 
     public String getId() {
         return id;
@@ -63,6 +92,16 @@ public class Promoter_ {
         }
         Promoter_ rhs = ((Promoter_) other);
         return new EqualsBuilder().append(name, rhs.name).append(description, rhs.description).append(id, rhs.id).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(name);
+        dest.writeValue(description);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

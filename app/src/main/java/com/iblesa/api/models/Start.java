@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Start {
+public class Start implements Parcelable
+{
 
     @SerializedName("localDate")
     @Expose
@@ -30,6 +34,35 @@ public class Start {
     @SerializedName("noSpecificTime")
     @Expose
     private Boolean noSpecificTime;
+    public final static Parcelable.Creator<Start> CREATOR = new Creator<Start>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Start createFromParcel(Parcel in) {
+            return new Start(in);
+        }
+
+        public Start[] newArray(int size) {
+            return (new Start[size]);
+        }
+
+    }
+    ;
+
+    protected Start(Parcel in) {
+        this.localDate = ((String) in.readValue((String.class.getClassLoader())));
+        this.localTime = ((String) in.readValue((String.class.getClassLoader())));
+        this.dateTime = ((String) in.readValue((String.class.getClassLoader())));
+        this.dateTBD = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.dateTBA = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.timeTBA = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.noSpecificTime = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+    }
+
+    public Start() {
+    }
 
     public String getLocalDate() {
         return localDate;
@@ -107,6 +140,20 @@ public class Start {
         }
         Start rhs = ((Start) other);
         return new EqualsBuilder().append(dateTime, rhs.dateTime).append(localTime, rhs.localTime).append(dateTBA, rhs.dateTBA).append(noSpecificTime, rhs.noSpecificTime).append(timeTBA, rhs.timeTBA).append(localDate, rhs.localDate).append(dateTBD, rhs.dateTBD).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(localDate);
+        dest.writeValue(localTime);
+        dest.writeValue(dateTime);
+        dest.writeValue(dateTBD);
+        dest.writeValue(dateTBA);
+        dest.writeValue(timeTBA);
+        dest.writeValue(noSpecificTime);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

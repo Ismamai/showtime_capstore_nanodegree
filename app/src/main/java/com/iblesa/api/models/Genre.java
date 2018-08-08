@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Genre {
+public class Genre implements Parcelable
+{
 
     @SerializedName("id")
     @Expose
@@ -15,6 +19,30 @@ public class Genre {
     @SerializedName("name")
     @Expose
     private String name;
+    public final static Parcelable.Creator<Genre> CREATOR = new Creator<Genre>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Genre createFromParcel(Parcel in) {
+            return new Genre(in);
+        }
+
+        public Genre[] newArray(int size) {
+            return (new Genre[size]);
+        }
+
+    }
+    ;
+
+    protected Genre(Parcel in) {
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Genre() {
+    }
 
     public String getId() {
         return id;
@@ -52,6 +80,15 @@ public class Genre {
         }
         Genre rhs = ((Genre) other);
         return new EqualsBuilder().append(name, rhs.name).append(id, rhs.id).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(name);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

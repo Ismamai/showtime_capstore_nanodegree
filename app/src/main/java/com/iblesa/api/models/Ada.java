@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Ada {
+public class Ada implements Parcelable
+{
 
     @SerializedName("adaPhones")
     @Expose
@@ -18,6 +22,31 @@ public class Ada {
     @SerializedName("adaHours")
     @Expose
     private String adaHours;
+    public final static Parcelable.Creator<Ada> CREATOR = new Creator<Ada>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Ada createFromParcel(Parcel in) {
+            return new Ada(in);
+        }
+
+        public Ada[] newArray(int size) {
+            return (new Ada[size]);
+        }
+
+    }
+    ;
+
+    protected Ada(Parcel in) {
+        this.adaPhones = ((String) in.readValue((String.class.getClassLoader())));
+        this.adaCustomCopy = ((String) in.readValue((String.class.getClassLoader())));
+        this.adaHours = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Ada() {
+    }
 
     public String getAdaPhones() {
         return adaPhones;
@@ -63,6 +92,16 @@ public class Ada {
         }
         Ada rhs = ((Ada) other);
         return new EqualsBuilder().append(adaCustomCopy, rhs.adaCustomCopy).append(adaPhones, rhs.adaPhones).append(adaHours, rhs.adaHours).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(adaPhones);
+        dest.writeValue(adaCustomCopy);
+        dest.writeValue(adaHours);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

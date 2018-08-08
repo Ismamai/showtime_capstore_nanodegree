@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Links___ {
+public class Links___ implements Parcelable
+{
 
     @SerializedName("first")
     @Expose
@@ -21,6 +25,32 @@ public class Links___ {
     @SerializedName("last")
     @Expose
     private Last last;
+    public final static Parcelable.Creator<Links___> CREATOR = new Creator<Links___>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Links___ createFromParcel(Parcel in) {
+            return new Links___(in);
+        }
+
+        public Links___[] newArray(int size) {
+            return (new Links___[size]);
+        }
+
+    }
+    ;
+
+    protected Links___(Parcel in) {
+        this.first = ((First) in.readValue((First.class.getClassLoader())));
+        this.self = ((Self___) in.readValue((Self___.class.getClassLoader())));
+        this.next = ((Next) in.readValue((Next.class.getClassLoader())));
+        this.last = ((Last) in.readValue((Last.class.getClassLoader())));
+    }
+
+    public Links___() {
+    }
 
     public First getFirst() {
         return first;
@@ -74,6 +104,17 @@ public class Links___ {
         }
         Links___ rhs = ((Links___) other);
         return new EqualsBuilder().append(next, rhs.next).append(self, rhs.self).append(last, rhs.last).append(first, rhs.first).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(first);
+        dest.writeValue(self);
+        dest.writeValue(next);
+        dest.writeValue(last);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

@@ -3,13 +3,17 @@ package com.iblesa.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Event {
+public class Event implements Parcelable
+{
 
     @SerializedName("name")
     @Expose
@@ -62,6 +66,45 @@ public class Event {
     @SerializedName("_embedded")
     @Expose
     private Embedded_ embedded;
+    public final static Parcelable.Creator<Event> CREATOR = new Creator<Event>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        public Event[] newArray(int size) {
+            return (new Event[size]);
+        }
+
+    }
+    ;
+
+    protected Event(Parcel in) {
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.type = ((String) in.readValue((String.class.getClassLoader())));
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.test = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.url = ((String) in.readValue((String.class.getClassLoader())));
+        this.locale = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.images, (com.iblesa.api.models.Image.class.getClassLoader()));
+        this.sales = ((Sales) in.readValue((Sales.class.getClassLoader())));
+        this.dates = ((Dates) in.readValue((Dates.class.getClassLoader())));
+        in.readList(this.classifications, (com.iblesa.api.models.Classification.class.getClassLoader()));
+        this.promoter = ((Promoter) in.readValue((Promoter.class.getClassLoader())));
+        in.readList(this.promoters, (com.iblesa.api.models.Promoter_.class.getClassLoader()));
+        this.pleaseNote = ((String) in.readValue((String.class.getClassLoader())));
+        this.seatmap = ((Seatmap) in.readValue((Seatmap.class.getClassLoader())));
+        this.ticketLimit = ((TicketLimit) in.readValue((TicketLimit.class.getClassLoader())));
+        this.links = ((Links) in.readValue((Links.class.getClassLoader())));
+        this.embedded = ((Embedded_) in.readValue((Embedded_.class.getClassLoader())));
+    }
+
+    public Event() {
+    }
 
     public String getName() {
         return name;
@@ -219,6 +262,30 @@ public class Event {
         }
         Event rhs = ((Event) other);
         return new EqualsBuilder().append(images, rhs.images).append(test, rhs.test).append(seatmap, rhs.seatmap).append(dates, rhs.dates).append(type, rhs.type).append(locale, rhs.locale).append(url, rhs.url).append(sales, rhs.sales).append(classifications, rhs.classifications).append(ticketLimit, rhs.ticketLimit).append(name, rhs.name).append(pleaseNote, rhs.pleaseNote).append(promoter, rhs.promoter).append(links, rhs.links).append(id, rhs.id).append(promoters, rhs.promoters).append(embedded, rhs.embedded).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+        dest.writeValue(type);
+        dest.writeValue(id);
+        dest.writeValue(test);
+        dest.writeValue(url);
+        dest.writeValue(locale);
+        dest.writeList(images);
+        dest.writeValue(sales);
+        dest.writeValue(dates);
+        dest.writeList(classifications);
+        dest.writeValue(promoter);
+        dest.writeList(promoters);
+        dest.writeValue(pleaseNote);
+        dest.writeValue(seatmap);
+        dest.writeValue(ticketLimit);
+        dest.writeValue(links);
+        dest.writeValue(embedded);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

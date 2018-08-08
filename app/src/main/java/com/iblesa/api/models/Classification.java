@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Classification {
+public class Classification implements Parcelable
+{
 
     @SerializedName("primary")
     @Expose
@@ -30,6 +34,35 @@ public class Classification {
     @SerializedName("family")
     @Expose
     private Boolean family;
+    public final static Parcelable.Creator<Classification> CREATOR = new Creator<Classification>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Classification createFromParcel(Parcel in) {
+            return new Classification(in);
+        }
+
+        public Classification[] newArray(int size) {
+            return (new Classification[size]);
+        }
+
+    }
+    ;
+
+    protected Classification(Parcel in) {
+        this.primary = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.segment = ((Segment) in.readValue((Segment.class.getClassLoader())));
+        this.genre = ((Genre) in.readValue((Genre.class.getClassLoader())));
+        this.subGenre = ((SubGenre) in.readValue((SubGenre.class.getClassLoader())));
+        this.type = ((Type) in.readValue((Type.class.getClassLoader())));
+        this.subType = ((SubType) in.readValue((SubType.class.getClassLoader())));
+        this.family = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+    }
+
+    public Classification() {
+    }
 
     public Boolean getPrimary() {
         return primary;
@@ -107,6 +140,20 @@ public class Classification {
         }
         Classification rhs = ((Classification) other);
         return new EqualsBuilder().append(subGenre, rhs.subGenre).append(segment, rhs.segment).append(genre, rhs.genre).append(subType, rhs.subType).append(type, rhs.type).append(family, rhs.family).append(primary, rhs.primary).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(primary);
+        dest.writeValue(segment);
+        dest.writeValue(genre);
+        dest.writeValue(subGenre);
+        dest.writeValue(type);
+        dest.writeValue(subType);
+        dest.writeValue(family);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

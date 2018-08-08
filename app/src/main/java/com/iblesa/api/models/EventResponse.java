@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class EventResponse {
+public class EventResponse implements Parcelable
+{
 
     @SerializedName("_embedded")
     @Expose
@@ -18,6 +22,31 @@ public class EventResponse {
     @SerializedName("page")
     @Expose
     private Page page;
+    public final static Parcelable.Creator<EventResponse> CREATOR = new Creator<EventResponse>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public EventResponse createFromParcel(Parcel in) {
+            return new EventResponse(in);
+        }
+
+        public EventResponse[] newArray(int size) {
+            return (new EventResponse[size]);
+        }
+
+    }
+    ;
+
+    protected EventResponse(Parcel in) {
+        this.embedded = ((Embedded) in.readValue((Embedded.class.getClassLoader())));
+        this.links = ((Links___) in.readValue((Links___.class.getClassLoader())));
+        this.page = ((Page) in.readValue((Page.class.getClassLoader())));
+    }
+
+    public EventResponse() {
+    }
 
     public Embedded getEmbedded() {
         return embedded;
@@ -63,6 +92,16 @@ public class EventResponse {
         }
         EventResponse rhs = ((EventResponse) other);
         return new EqualsBuilder().append(links, rhs.links).append(page, rhs.page).append(embedded, rhs.embedded).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(embedded);
+        dest.writeValue(links);
+        dest.writeValue(page);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

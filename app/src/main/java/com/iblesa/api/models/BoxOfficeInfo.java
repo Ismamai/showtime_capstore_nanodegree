@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class BoxOfficeInfo {
+public class BoxOfficeInfo implements Parcelable
+{
 
     @SerializedName("phoneNumberDetail")
     @Expose
@@ -18,6 +22,31 @@ public class BoxOfficeInfo {
     @SerializedName("willCallDetail")
     @Expose
     private String willCallDetail;
+    public final static Parcelable.Creator<BoxOfficeInfo> CREATOR = new Creator<BoxOfficeInfo>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public BoxOfficeInfo createFromParcel(Parcel in) {
+            return new BoxOfficeInfo(in);
+        }
+
+        public BoxOfficeInfo[] newArray(int size) {
+            return (new BoxOfficeInfo[size]);
+        }
+
+    }
+    ;
+
+    protected BoxOfficeInfo(Parcel in) {
+        this.phoneNumberDetail = ((String) in.readValue((String.class.getClassLoader())));
+        this.openHoursDetail = ((String) in.readValue((String.class.getClassLoader())));
+        this.willCallDetail = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public BoxOfficeInfo() {
+    }
 
     public String getPhoneNumberDetail() {
         return phoneNumberDetail;
@@ -63,6 +92,16 @@ public class BoxOfficeInfo {
         }
         BoxOfficeInfo rhs = ((BoxOfficeInfo) other);
         return new EqualsBuilder().append(willCallDetail, rhs.willCallDetail).append(openHoursDetail, rhs.openHoursDetail).append(phoneNumberDetail, rhs.phoneNumberDetail).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(phoneNumberDetail);
+        dest.writeValue(openHoursDetail);
+        dest.writeValue(willCallDetail);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Country {
+public class Country implements Parcelable
+{
 
     @SerializedName("name")
     @Expose
@@ -15,6 +19,30 @@ public class Country {
     @SerializedName("countryCode")
     @Expose
     private String countryCode;
+    public final static Parcelable.Creator<Country> CREATOR = new Creator<Country>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Country createFromParcel(Parcel in) {
+            return new Country(in);
+        }
+
+        public Country[] newArray(int size) {
+            return (new Country[size]);
+        }
+
+    }
+    ;
+
+    protected Country(Parcel in) {
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.countryCode = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Country() {
+    }
 
     public String getName() {
         return name;
@@ -52,6 +80,15 @@ public class Country {
         }
         Country rhs = ((Country) other);
         return new EqualsBuilder().append(name, rhs.name).append(countryCode, rhs.countryCode).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+        dest.writeValue(countryCode);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

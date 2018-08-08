@@ -1,17 +1,44 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class City {
+public class City implements Parcelable
+{
 
     @SerializedName("name")
     @Expose
     private String name;
+    public final static Parcelable.Creator<City> CREATOR = new Creator<City>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public City createFromParcel(Parcel in) {
+            return new City(in);
+        }
+
+        public City[] newArray(int size) {
+            return (new City[size]);
+        }
+
+    }
+    ;
+
+    protected City(Parcel in) {
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public City() {
+    }
 
     public String getName() {
         return name;
@@ -41,6 +68,14 @@ public class City {
         }
         City rhs = ((City) other);
         return new EqualsBuilder().append(name, rhs.name).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

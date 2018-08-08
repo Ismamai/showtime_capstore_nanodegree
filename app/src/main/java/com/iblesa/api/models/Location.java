@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Location {
+public class Location implements Parcelable
+{
 
     @SerializedName("longitude")
     @Expose
@@ -15,6 +19,30 @@ public class Location {
     @SerializedName("latitude")
     @Expose
     private String latitude;
+    public final static Parcelable.Creator<Location> CREATOR = new Creator<Location>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Location createFromParcel(Parcel in) {
+            return new Location(in);
+        }
+
+        public Location[] newArray(int size) {
+            return (new Location[size]);
+        }
+
+    }
+    ;
+
+    protected Location(Parcel in) {
+        this.longitude = ((String) in.readValue((String.class.getClassLoader())));
+        this.latitude = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Location() {
+    }
 
     public String getLongitude() {
         return longitude;
@@ -52,6 +80,15 @@ public class Location {
         }
         Location rhs = ((Location) other);
         return new EqualsBuilder().append(longitude, rhs.longitude).append(latitude, rhs.latitude).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(longitude);
+        dest.writeValue(latitude);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

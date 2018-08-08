@@ -1,17 +1,44 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Twitter_ {
+public class Twitter_ implements Parcelable
+{
 
     @SerializedName("url")
     @Expose
     private String url;
+    public final static Parcelable.Creator<Twitter_> CREATOR = new Creator<Twitter_>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Twitter_ createFromParcel(Parcel in) {
+            return new Twitter_(in);
+        }
+
+        public Twitter_[] newArray(int size) {
+            return (new Twitter_[size]);
+        }
+
+    }
+    ;
+
+    protected Twitter_(Parcel in) {
+        this.url = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Twitter_() {
+    }
 
     public String getUrl() {
         return url;
@@ -41,6 +68,14 @@ public class Twitter_ {
         }
         Twitter_ rhs = ((Twitter_) other);
         return new EqualsBuilder().append(url, rhs.url).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(url);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

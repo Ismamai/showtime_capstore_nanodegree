@@ -3,13 +3,17 @@ package com.iblesa.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Links {
+public class Links implements Parcelable
+{
 
     @SerializedName("self")
     @Expose
@@ -20,6 +24,31 @@ public class Links {
     @SerializedName("venues")
     @Expose
     private List<Venue> venues = new ArrayList<Venue>();
+    public final static Parcelable.Creator<Links> CREATOR = new Creator<Links>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Links createFromParcel(Parcel in) {
+            return new Links(in);
+        }
+
+        public Links[] newArray(int size) {
+            return (new Links[size]);
+        }
+
+    }
+    ;
+
+    protected Links(Parcel in) {
+        this.self = ((Self) in.readValue((Self.class.getClassLoader())));
+        in.readList(this.attractions, (com.iblesa.api.models.Attraction.class.getClassLoader()));
+        in.readList(this.venues, (com.iblesa.api.models.Venue.class.getClassLoader()));
+    }
+
+    public Links() {
+    }
 
     public Self getSelf() {
         return self;
@@ -65,6 +94,16 @@ public class Links {
         }
         Links rhs = ((Links) other);
         return new EqualsBuilder().append(self, rhs.self).append(venues, rhs.venues).append(attractions, rhs.attractions).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(self);
+        dest.writeList(attractions);
+        dest.writeList(venues);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

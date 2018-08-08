@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class UpcomingEvents {
+public class UpcomingEvents implements Parcelable
+{
 
     @SerializedName("_total")
     @Expose
@@ -15,6 +19,30 @@ public class UpcomingEvents {
     @SerializedName("ticketmaster")
     @Expose
     private Integer ticketmaster;
+    public final static Parcelable.Creator<UpcomingEvents> CREATOR = new Creator<UpcomingEvents>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public UpcomingEvents createFromParcel(Parcel in) {
+            return new UpcomingEvents(in);
+        }
+
+        public UpcomingEvents[] newArray(int size) {
+            return (new UpcomingEvents[size]);
+        }
+
+    }
+    ;
+
+    protected UpcomingEvents(Parcel in) {
+        this.total = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.ticketmaster = ((Integer) in.readValue((Integer.class.getClassLoader())));
+    }
+
+    public UpcomingEvents() {
+    }
 
     public Integer getTotal() {
         return total;
@@ -52,6 +80,15 @@ public class UpcomingEvents {
         }
         UpcomingEvents rhs = ((UpcomingEvents) other);
         return new EqualsBuilder().append(total, rhs.total).append(ticketmaster, rhs.ticketmaster).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(total);
+        dest.writeValue(ticketmaster);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

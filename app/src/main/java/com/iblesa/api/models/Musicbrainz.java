@@ -1,17 +1,44 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Musicbrainz {
+public class Musicbrainz implements Parcelable
+{
 
     @SerializedName("id")
     @Expose
     private String id;
+    public final static Parcelable.Creator<Musicbrainz> CREATOR = new Creator<Musicbrainz>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Musicbrainz createFromParcel(Parcel in) {
+            return new Musicbrainz(in);
+        }
+
+        public Musicbrainz[] newArray(int size) {
+            return (new Musicbrainz[size]);
+        }
+
+    }
+    ;
+
+    protected Musicbrainz(Parcel in) {
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Musicbrainz() {
+    }
 
     public String getId() {
         return id;
@@ -41,6 +68,14 @@ public class Musicbrainz {
         }
         Musicbrainz rhs = ((Musicbrainz) other);
         return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

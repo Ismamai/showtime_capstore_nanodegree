@@ -3,13 +3,17 @@ package com.iblesa.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Sales {
+public class Sales implements Parcelable
+{
 
     @SerializedName("public")
     @Expose
@@ -17,6 +21,30 @@ public class Sales {
     @SerializedName("presales")
     @Expose
     private List<Presale> presales = new ArrayList<Presale>();
+    public final static Parcelable.Creator<Sales> CREATOR = new Creator<Sales>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Sales createFromParcel(Parcel in) {
+            return new Sales(in);
+        }
+
+        public Sales[] newArray(int size) {
+            return (new Sales[size]);
+        }
+
+    }
+    ;
+
+    protected Sales(Parcel in) {
+        this._public = ((Public) in.readValue((Public.class.getClassLoader())));
+        in.readList(this.presales, (com.iblesa.api.models.Presale.class.getClassLoader()));
+    }
+
+    public Sales() {
+    }
 
     public Public getPublic() {
         return _public;
@@ -54,6 +82,15 @@ public class Sales {
         }
         Sales rhs = ((Sales) other);
         return new EqualsBuilder().append(presales, rhs.presales).append(_public, rhs._public).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(_public);
+        dest.writeList(presales);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

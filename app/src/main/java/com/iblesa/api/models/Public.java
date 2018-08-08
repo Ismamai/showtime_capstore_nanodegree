@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Public {
+public class Public implements Parcelable
+{
 
     @SerializedName("startDateTime")
     @Expose
@@ -18,6 +22,31 @@ public class Public {
     @SerializedName("endDateTime")
     @Expose
     private String endDateTime;
+    public final static Parcelable.Creator<Public> CREATOR = new Creator<Public>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Public createFromParcel(Parcel in) {
+            return new Public(in);
+        }
+
+        public Public[] newArray(int size) {
+            return (new Public[size]);
+        }
+
+    }
+    ;
+
+    protected Public(Parcel in) {
+        this.startDateTime = ((String) in.readValue((String.class.getClassLoader())));
+        this.startTBD = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.endDateTime = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Public() {
+    }
 
     public String getStartDateTime() {
         return startDateTime;
@@ -63,6 +92,16 @@ public class Public {
         }
         Public rhs = ((Public) other);
         return new EqualsBuilder().append(startTBD, rhs.startTBD).append(startDateTime, rhs.startDateTime).append(endDateTime, rhs.endDateTime).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(startDateTime);
+        dest.writeValue(startTBD);
+        dest.writeValue(endDateTime);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

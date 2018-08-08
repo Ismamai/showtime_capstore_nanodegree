@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Image__ {
+public class Image__ implements Parcelable
+{
 
     @SerializedName("ratio")
     @Expose
@@ -24,6 +28,33 @@ public class Image__ {
     @SerializedName("fallback")
     @Expose
     private Boolean fallback;
+    public final static Parcelable.Creator<Image__> CREATOR = new Creator<Image__>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Image__ createFromParcel(Parcel in) {
+            return new Image__(in);
+        }
+
+        public Image__[] newArray(int size) {
+            return (new Image__[size]);
+        }
+
+    }
+    ;
+
+    protected Image__(Parcel in) {
+        this.ratio = ((String) in.readValue((String.class.getClassLoader())));
+        this.url = ((String) in.readValue((String.class.getClassLoader())));
+        this.width = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.height = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.fallback = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+    }
+
+    public Image__() {
+    }
 
     public String getRatio() {
         return ratio;
@@ -85,6 +116,18 @@ public class Image__ {
         }
         Image__ rhs = ((Image__) other);
         return new EqualsBuilder().append(width, rhs.width).append(fallback, rhs.fallback).append(url, rhs.url).append(ratio, rhs.ratio).append(height, rhs.height).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(ratio);
+        dest.writeValue(url);
+        dest.writeValue(width);
+        dest.writeValue(height);
+        dest.writeValue(fallback);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

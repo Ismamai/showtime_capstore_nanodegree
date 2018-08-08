@@ -3,13 +3,17 @@ package com.iblesa.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Attraction_ {
+public class Attraction_ implements Parcelable
+{
 
     @SerializedName("name")
     @Expose
@@ -44,6 +48,39 @@ public class Attraction_ {
     @SerializedName("_links")
     @Expose
     private Links__ links;
+    public final static Parcelable.Creator<Attraction_> CREATOR = new Creator<Attraction_>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Attraction_ createFromParcel(Parcel in) {
+            return new Attraction_(in);
+        }
+
+        public Attraction_[] newArray(int size) {
+            return (new Attraction_[size]);
+        }
+
+    }
+    ;
+
+    protected Attraction_(Parcel in) {
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.type = ((String) in.readValue((String.class.getClassLoader())));
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.test = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.url = ((String) in.readValue((String.class.getClassLoader())));
+        this.locale = ((String) in.readValue((String.class.getClassLoader())));
+        this.externalLinks = ((ExternalLinks) in.readValue((ExternalLinks.class.getClassLoader())));
+        in.readList(this.images, (com.iblesa.api.models.Image__.class.getClassLoader()));
+        in.readList(this.classifications, (com.iblesa.api.models.Classification_.class.getClassLoader()));
+        this.upcomingEvents = ((UpcomingEvents_) in.readValue((UpcomingEvents_.class.getClassLoader())));
+        this.links = ((Links__) in.readValue((Links__.class.getClassLoader())));
+    }
+
+    public Attraction_() {
+    }
 
     public String getName() {
         return name;
@@ -153,6 +190,24 @@ public class Attraction_ {
         }
         Attraction_ rhs = ((Attraction_) other);
         return new EqualsBuilder().append(classifications, rhs.classifications).append(images, rhs.images).append(test, rhs.test).append(upcomingEvents, rhs.upcomingEvents).append(name, rhs.name).append(externalLinks, rhs.externalLinks).append(links, rhs.links).append(id, rhs.id).append(type, rhs.type).append(locale, rhs.locale).append(url, rhs.url).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+        dest.writeValue(type);
+        dest.writeValue(id);
+        dest.writeValue(test);
+        dest.writeValue(url);
+        dest.writeValue(locale);
+        dest.writeValue(externalLinks);
+        dest.writeList(images);
+        dest.writeList(classifications);
+        dest.writeValue(upcomingEvents);
+        dest.writeValue(links);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

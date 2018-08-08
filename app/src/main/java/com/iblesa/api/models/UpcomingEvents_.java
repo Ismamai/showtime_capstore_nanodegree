@@ -1,13 +1,17 @@
 
 package com.iblesa.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class UpcomingEvents_ {
+public class UpcomingEvents_ implements Parcelable
+{
 
     @SerializedName("_total")
     @Expose
@@ -27,6 +31,34 @@ public class UpcomingEvents_ {
     @SerializedName("ticketmaster")
     @Expose
     private Integer ticketmaster;
+    public final static Parcelable.Creator<UpcomingEvents_> CREATOR = new Creator<UpcomingEvents_>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public UpcomingEvents_ createFromParcel(Parcel in) {
+            return new UpcomingEvents_(in);
+        }
+
+        public UpcomingEvents_[] newArray(int size) {
+            return (new UpcomingEvents_[size]);
+        }
+
+    }
+    ;
+
+    protected UpcomingEvents_(Parcel in) {
+        this.total = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.mfxDk = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.tmr = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.mfxNl = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.mfxDe = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.ticketmaster = ((Integer) in.readValue((Integer.class.getClassLoader())));
+    }
+
+    public UpcomingEvents_() {
+    }
 
     public Integer getTotal() {
         return total;
@@ -96,6 +128,19 @@ public class UpcomingEvents_ {
         }
         UpcomingEvents_ rhs = ((UpcomingEvents_) other);
         return new EqualsBuilder().append(mfxDe, rhs.mfxDe).append(total, rhs.total).append(mfxDk, rhs.mfxDk).append(tmr, rhs.tmr).append(ticketmaster, rhs.ticketmaster).append(mfxNl, rhs.mfxNl).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(total);
+        dest.writeValue(mfxDk);
+        dest.writeValue(tmr);
+        dest.writeValue(mfxNl);
+        dest.writeValue(mfxDe);
+        dest.writeValue(ticketmaster);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

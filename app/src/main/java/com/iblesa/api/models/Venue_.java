@@ -3,13 +3,17 @@ package com.iblesa.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Venue_ {
+public class Venue_ implements Parcelable
+{
 
     @SerializedName("name")
     @Expose
@@ -80,6 +84,51 @@ public class Venue_ {
     @SerializedName("parkingDetail")
     @Expose
     private String parkingDetail;
+    public final static Parcelable.Creator<Venue_> CREATOR = new Creator<Venue_>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Venue_ createFromParcel(Parcel in) {
+            return new Venue_(in);
+        }
+
+        public Venue_[] newArray(int size) {
+            return (new Venue_[size]);
+        }
+
+    }
+    ;
+
+    protected Venue_(Parcel in) {
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.type = ((String) in.readValue((String.class.getClassLoader())));
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.test = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.url = ((String) in.readValue((String.class.getClassLoader())));
+        this.locale = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.images, (com.iblesa.api.models.Image_.class.getClassLoader()));
+        this.postalCode = ((String) in.readValue((String.class.getClassLoader())));
+        this.timezone = ((String) in.readValue((String.class.getClassLoader())));
+        this.city = ((City) in.readValue((City.class.getClassLoader())));
+        this.country = ((Country) in.readValue((Country.class.getClassLoader())));
+        this.address = ((Address) in.readValue((Address.class.getClassLoader())));
+        this.location = ((Location) in.readValue((Location.class.getClassLoader())));
+        in.readList(this.markets, (com.iblesa.api.models.Market.class.getClassLoader()));
+        in.readList(this.dmas, (com.iblesa.api.models.Dma.class.getClassLoader()));
+        this.boxOfficeInfo = ((BoxOfficeInfo) in.readValue((BoxOfficeInfo.class.getClassLoader())));
+        this.accessibleSeatingDetail = ((String) in.readValue((String.class.getClassLoader())));
+        this.generalInfo = ((GeneralInfo) in.readValue((GeneralInfo.class.getClassLoader())));
+        this.upcomingEvents = ((UpcomingEvents) in.readValue((UpcomingEvents.class.getClassLoader())));
+        this.ada = ((Ada) in.readValue((Ada.class.getClassLoader())));
+        this.links = ((Links_) in.readValue((Links_.class.getClassLoader())));
+        this.social = ((Social) in.readValue((Social.class.getClassLoader())));
+        this.parkingDetail = ((String) in.readValue((String.class.getClassLoader())));
+    }
+
+    public Venue_() {
+    }
 
     public String getName() {
         return name;
@@ -285,6 +334,36 @@ public class Venue_ {
         }
         Venue_ rhs = ((Venue_) other);
         return new EqualsBuilder().append(country, rhs.country).append(images, rhs.images).append(address, rhs.address).append(test, rhs.test).append(city, rhs.city).append(social, rhs.social).append(timezone, rhs.timezone).append(upcomingEvents, rhs.upcomingEvents).append(postalCode, rhs.postalCode).append(generalInfo, rhs.generalInfo).append(type, rhs.type).append(locale, rhs.locale).append(boxOfficeInfo, rhs.boxOfficeInfo).append(url, rhs.url).append(markets, rhs.markets).append(dmas, rhs.dmas).append(accessibleSeatingDetail, rhs.accessibleSeatingDetail).append(name, rhs.name).append(parkingDetail, rhs.parkingDetail).append(location, rhs.location).append(links, rhs.links).append(id, rhs.id).append(ada, rhs.ada).isEquals();
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+        dest.writeValue(type);
+        dest.writeValue(id);
+        dest.writeValue(test);
+        dest.writeValue(url);
+        dest.writeValue(locale);
+        dest.writeList(images);
+        dest.writeValue(postalCode);
+        dest.writeValue(timezone);
+        dest.writeValue(city);
+        dest.writeValue(country);
+        dest.writeValue(address);
+        dest.writeValue(location);
+        dest.writeList(markets);
+        dest.writeList(dmas);
+        dest.writeValue(boxOfficeInfo);
+        dest.writeValue(accessibleSeatingDetail);
+        dest.writeValue(generalInfo);
+        dest.writeValue(upcomingEvents);
+        dest.writeValue(ada);
+        dest.writeValue(links);
+        dest.writeValue(social);
+        dest.writeValue(parkingDetail);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }
