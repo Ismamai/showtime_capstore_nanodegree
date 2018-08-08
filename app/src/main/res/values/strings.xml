@@ -8,4 +8,8 @@
     <string name="open_venue_location">Show location</string>
     <string name="event_item_name_label">Name</string>
     <string name="tv_events_app">Showtime</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="event_detail_name_label">Name</string>
+    <string name="event_detail_date_label">Date</string>
+    <string name="event_detail_venue_label">Venue</string>
 </resources>

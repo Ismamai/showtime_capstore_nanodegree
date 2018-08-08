@@ -1,6 +1,7 @@
 package com.iblesa.showtime.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.iblesa.api.models.EventResponse;
 import com.iblesa.api.models.Image;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
+import com.iblesa.showtime.detail.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -131,9 +133,13 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
 
         @Override
         public void onClick(View v) {
+            Event event = mEventResponse.getEmbedded().getEvents().get(getAdapterPosition());
             Log.d(Constants.TAG, "Selected element " +
-                    mEventResponse.getEmbedded().getEvents().get(getAdapterPosition()));
+                    event);
             //Open detail activity
+            Intent detailActivity = new Intent(mContext, DetailActivity.class);
+            detailActivity.putExtra(Constants.EVENT_PARCEL, event);
+            mContext.startActivity(detailActivity);
         }
     }
 }
