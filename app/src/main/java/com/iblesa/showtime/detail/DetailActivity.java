@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.iblesa.api.models.Event;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
+import com.iblesa.util.EventExtractor;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,16 +21,16 @@ import butterknife.ButterKnife;
 public class DetailActivity extends AppCompatActivity {
 
     @BindView(R.id.event_detail_name)
-    TextView eventName;
+    TextView mEventName;
 
     @BindView(R.id.event_detail_image)
-    ImageView eventImage;
+    ImageView mEventImage;
 
     @BindView(R.id.event_detail_date)
-    TextView eventDate;
+    TextView mEventDate;
 
     @BindView(R.id.event_detail_venue)
-    TextView eventVenue;
+    TextView mEventVenue;
 
 
     @Override
@@ -37,6 +39,19 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         Event event = (Event) getIntent().getParcelableExtra(Constants.EVENT_PARCEL);
+        String image = EventExtractor.getImage(event);
+        Picasso.get()
+                .load(image)
+                .placeholder(R.drawable.progress_image)
+                .error(R.drawable.progress_image)
+                .into(mEventImage);
+        String eventName = event.getName();
+        mEventName.setText(eventName);
+        String eventVenue = EventExtractor.getVenue(event);
+        mEventVenue.setText(eventVenue);
+
+        mEventDate.setText("Now");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,5 +64,4 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
-
 }
