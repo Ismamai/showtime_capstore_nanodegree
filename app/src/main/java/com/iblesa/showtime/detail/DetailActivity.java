@@ -1,5 +1,7 @@
 package com.iblesa.showtime.detail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iblesa.api.models.Event;
+import com.iblesa.api.models.Location;
 import com.iblesa.api.models.Venue_;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
@@ -50,7 +53,9 @@ public class DetailActivity extends AppCompatActivity {
         mEventName.setText(eventName);
         Venue_ eventVenue = EventExtractor.getVenue(event);
         mEventVenue.setText(eventVenue.getName());
-
+        Location eventVenueLocation = eventVenue.getLocation();
+        final String location = "geo:" + eventVenueLocation.getLatitude()
+                +","+eventVenueLocation.getLongitude();
         mEventDate.setText("Now");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,6 +65,10 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse(location);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
