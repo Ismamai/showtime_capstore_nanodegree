@@ -18,6 +18,7 @@ import com.iblesa.api.models.Image;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
 import com.iblesa.showtime.detail.DetailActivity;
+import com.iblesa.util.EventExtractor;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -87,7 +88,7 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
 
         void bind(Event event) {
 
-            String image = getImage(event);
+            String image = EventExtractor.getImage(event);
             Picasso.get()
                     .load(image)
                     .placeholder(R.drawable.progress_image)
@@ -95,7 +96,7 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
                     .into(event_image);
             String eventName = event.getName();
             event_name.setText(eventName);
-            String eventVenue = getVenue(event);
+            String eventVenue = EventExtractor.getVenue(event);
             event_venue.setText(eventVenue);
             String message = String.format("Data to show in recyclerview is event %s venue %s %s",
                     eventName,
@@ -104,34 +105,7 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
 
         }
 
-        private String getVenue(Event event) {
-            Embedded_ embedded = event.getEmbedded();
-            String result = null;
-            if (embedded != null
-                    && embedded.getVenues() != null
-                    && embedded.getVenues().size() != 0) {
-                result = embedded.getVenues().get(0).getName();
-            }
-            return result;
-        }
-
-        private String getImage(Event event) {
-            List<Image> images = event.getImages();
-            String smaller_image = null;
-            String ratio = "3_2";
-            int min_size = Integer.MAX_VALUE;
-            for (Image image : images) {
-                if (ratio.equals(image.getRatio())) {
-                    if (image.getWidth() < min_size) {
-                        min_size = image.getWidth();
-                        smaller_image = image.getUrl();
-                    }
-                }
-            }
-            return smaller_image;
-        }
-
-        @Override
+              @Override
         public void onClick(View v) {
             Event event = mEventResponse.getEmbedded().getEvents().get(getAdapterPosition());
             Log.d(Constants.TAG, "Selected element " +
