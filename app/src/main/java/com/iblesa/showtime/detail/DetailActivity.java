@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iblesa.api.models.Event;
+import com.iblesa.api.models.Venue_;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
 import com.iblesa.util.EventExtractor;
@@ -47,8 +48,8 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mEventImage);
         String eventName = event.getName();
         mEventName.setText(eventName);
-        String eventVenue = EventExtractor.getVenue(event);
-        mEventVenue.setText(eventVenue);
+        Venue_ eventVenue = EventExtractor.getVenue(event);
+        mEventVenue.setText(eventVenue.getName());
 
         mEventDate.setText("Now");
 

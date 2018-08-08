@@ -3,17 +3,18 @@ package com.iblesa.util;
 import com.iblesa.api.models.Embedded_;
 import com.iblesa.api.models.Event;
 import com.iblesa.api.models.Image;
+import com.iblesa.api.models.Venue_;
 
 import java.util.List;
 
 public class EventExtractor {
-    public static String getVenue(Event event) {
+    public static Venue_ getVenue(Event event) {
         Embedded_ embedded = event.getEmbedded();
-        String result = null;
+        Venue_ result = null;
         if (embedded != null
                 && embedded.getVenues() != null
                 && embedded.getVenues().size() != 0) {
-            result = embedded.getVenues().get(0).getName();
+            result = embedded.getVenues().get(0);
         }
         return result;
     }

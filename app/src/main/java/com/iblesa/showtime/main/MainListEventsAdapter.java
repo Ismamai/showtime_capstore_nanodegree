@@ -96,7 +96,7 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
                     .into(event_image);
             String eventName = event.getName();
             event_name.setText(eventName);
-            String eventVenue = EventExtractor.getVenue(event);
+            String eventVenue = EventExtractor.getVenue(event).getName();
             event_venue.setText(eventVenue);
             String message = String.format("Data to show in recyclerview is event %s venue %s %s",
                     eventName,
