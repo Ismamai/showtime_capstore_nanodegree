@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final int PERMISSION_ACCESS_COARSE_LOCATION = 1234;
     private static final String LAST_LOCATION_LATITUDE = "LATITUDE";
     private static final String LAST_LOCATION_LOGITUDE = "LONGITUDE";
+    private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
     private static boolean locationEnabled = false;
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefresh;
+
+    Parcelable mLayoutManagerSavedState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 mAdapter.setEventResponse(eventResponse);
                 mSwipeRefresh.setRefreshing(false);
 
+                restoreLayoutManagerPostion();
+
             }
 
             @Override
@@ -145,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 showError(error);
             }
         });
+    }
+
+    private void restoreLayoutManagerPostion() {
+        if (mLayoutManagerSavedState != null) {
+            rvEvents.getLayoutManager().onRestoreInstanceState(mLayoutManagerSavedState);
+        }
+
     }
 
     private void checkConnectivity() {
@@ -178,6 +191,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onSaveInstanceState(outState);
         outState.putDouble(LAST_LOCATION_LATITUDE, mLatitude);
         outState.putDouble(LAST_LOCATION_LOGITUDE, mLongitude);
+        outState.putParcelable(SAVED_LAYOUT_MANAGER, rvEvents.getLayoutManager().onSaveInstanceState());
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mLayoutManagerSavedState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        mLongitude = savedInstanceState.getDouble(LAST_LOCATION_LOGITUDE);
+        mLatitude = savedInstanceState.getDouble(LAST_LOCATION_LATITUDE);
     }
 
     @Override
