@@ -15,8 +15,7 @@
     <style name="DetailLabel">
         <item name="android:textSize">24dp</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textStyle">bold</item>
-
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
 
     </style>
 
