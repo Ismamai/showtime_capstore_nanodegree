@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final String LAST_LOCATION_LOGITUDE = "LONGITUDE";
     private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
     private static boolean locationEnabled = false;
-    private FusedLocationProviderClient mFusedLocationClient;
-
     private double mLatitude = Constants.DEFAULT_LOCATION_LAT;
     private double mLongitude = Constants.DEFAULT_LOCATION_LON;
 
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSION_ACCESS_COARSE_LOCATION);
         }
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
