@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/event_item_name_label"
-        style="@style/DetailLabel"
+        style="@style/MainLabel"
         app:layout_constraintStart_toStartOf="@id/event_item_guideline"
         app:layout_constraintTop_toBottomOf="@id/event_item_image"
         />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Bananarama in concert!!"
-        style="@style/DetailValue"
+        style="@style/MainValue"
         app:layout_constraintBaseline_toBaselineOf="@id/event_item_name_label"
         app:layout_constraintStart_toEndOf="@id/event_item_name_label"
         app:layout_constraintTop_toBottomOf="@id/event_item_image"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/venue_label"
-        style="@style/DetailLabel"
+        style="@style/MainLabel"
         app:layout_constraintStart_toStartOf="@id/event_item_guideline"
         app:layout_constraintTop_toBottomOf="@id/event_item_name_label"/>
 
@@ -55,11 +55,10 @@
         android:id="@+id/event_item_venue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/DetailValue"
+        style="@style/MainValue"
         app:layout_constraintBaseline_toBaselineOf="@id/event_item_venue_label"
         app:layout_constraintStart_toEndOf="@id/event_item_venue_label"
         app:layout_constraintTop_toBottomOf="@id/event_item_name_label"/>
-
 
 
 </android.support.constraint.ConstraintLayout>
