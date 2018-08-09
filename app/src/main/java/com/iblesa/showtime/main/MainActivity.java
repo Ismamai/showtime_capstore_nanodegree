@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -62,11 +63,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        String apiKey = getString(R.string.ticketmaster_api_key);
         checkLocationEnabled();
         rvEvents.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MainListEventsAdapter(this);
         rvEvents.setAdapter(mAdapter);
+
+        rvEvents.addItemDecoration(new DividerItemDecoration(rvEvents.getContext(),
+                DividerItemDecoration.VERTICAL));
 
         mSwipeRefresh.setOnRefreshListener(this);
 
