@@ -12,4 +12,7 @@
     <string name="event_detail_name_label">Name</string>
     <string name="event_detail_date_label">Date</string>
     <string name="event_detail_venue_label">Venue</string>
+    <string name="event_detail_segment_label">Segment</string>
+    <string name="event_detail_genre_label">Genre</string>
+    <string name="event_detail_subgenre_label">Subgenre</string>
 </resources>

@@ -12,13 +12,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.iblesa.api.models.Classification;
 import com.iblesa.api.models.Event;
 import com.iblesa.api.models.Location;
+import com.iblesa.api.models.Start;
 import com.iblesa.api.models.Venue_;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
 import com.iblesa.util.EventExtractor;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,13 +43,22 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.event_detail_venue)
     TextView mEventVenue;
 
+    @BindView(R.id.event_detail_segment)
+    TextView mEventSegment;
+
+    @BindView(R.id.event_detail_genre)
+    TextView mEventGenre;
+
+    @BindView(R.id.event_detail_subgenre)
+    TextView mEventSubgenre;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        Event event = (Event) getIntent().getParcelableExtra(Constants.EVENT_PARCEL);
+        Event event = getIntent().getParcelableExtra(Constants.EVENT_PARCEL);
         String image = EventExtractor.getImage(event);
         Picasso.get()
                 .load(image)
@@ -57,8 +72,39 @@ public class DetailActivity extends AppCompatActivity {
         Location eventVenueLocation = eventVenue.getLocation();
         final String location = "geo:" + eventVenueLocation.getLatitude()
                 +","+eventVenueLocation.getLongitude()+"?q="+eventVenue.getName();
-        mEventDate.setText("Now");
+        Start dates = event.getDates().getStart();
+        String localDate = dates.getLocalDate();
+        String localTime = dates.getLocalTime();
 
+        StringBuilder date = new StringBuilder();
+        if (!StringUtils.isEmpty(localDate)) {
+            date.append(localDate);
+        }
+        if (!StringUtils.isEmpty(localTime)) {
+            date.append(" at ").append(localTime);
+        }
+
+        mEventDate.setText(date.toString());
+
+        List<Classification> classifications = event.getClassifications();
+
+        String genre = null;
+        String segment = null;
+        String subGenre = null;
+        if (classifications.size() > 0) {
+            Classification classification = classifications.get(0);
+            segment = classification.getSegment().getName();
+            mEventSegment.setText(segment);
+
+            genre = classification.getGenre().getName();
+            mEventGenre.setText(genre);
+
+            subGenre = classification.getSubGenre().getName();
+            mEventSubgenre.setText(subGenre);
+
+        }
+        String message = String.format("Genre: %s \nSubgenre: %s \nSegment %s", genre, subGenre, segment);
+        Log.d(Constants.TAG, message);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -12,8 +12,8 @@
         android:id="@+id/event_detail_image"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/event_image"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,14 +31,14 @@
         android:layout_height="wrap_content"
         android:text="@string/event_detail_name_label"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/event_detail_image"/>
+        app:layout_constraintTop_toBottomOf="@id/event_detail_image" />
 
     <TextView
         android:id="@+id/event_detail_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/event_detail_name_label"
+        app:layout_constraintStart_toEndOf="@id/barrier"
         app:layout_constraintTop_toBottomOf="@id/event_detail_image" />
 
     <TextView
@@ -47,16 +47,71 @@
         android:layout_height="wrap_content"
         android:text="@string/event_detail_date_label"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/event_detail_name_label"/>
+        app:layout_constraintTop_toBottomOf="@id/event_detail_name_label" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="event_detail_name_label,event_detail_segment_label,event_detail_date_label,event_detail_subgenre_label,event_detail_venue_label,event_detail_genre_label"
+       />
 
     <TextView
         android:id="@+id/event_detail_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/event_detail_date_label"
-        app:layout_constraintTop_toBottomOf="@id/event_detail_name_label"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/event_detail_name_label" />
 
+    <TextView
+        android:id="@+id/event_detail_segment_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/event_detail_segment_label"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/event_detail_date_label" />
+
+    <TextView
+        android:id="@+id/event_detail_segment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_detail_segment_label"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+    <TextView
+        android:id="@+id/event_detail_genre_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/event_detail_genre_label"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/event_detail_segment_label" />
+
+    <TextView
+        android:id="@+id/event_detail_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_detail_genre_label"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+    <TextView
+        android:id="@+id/event_detail_subgenre_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/event_detail_subgenre_label"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/event_detail_genre_label" />
+
+    <TextView
+        android:id="@+id/event_detail_subgenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/event_detail_subgenre_label"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
 
     <TextView
         android:id="@+id/event_detail_venue_label"
@@ -64,17 +119,15 @@
         android:layout_height="wrap_content"
         android:text="@string/event_detail_venue_label"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/event_detail_date_label"/>
+        app:layout_constraintTop_toBottomOf="@id/event_detail_subgenre_label" />
 
     <TextView
         android:id="@+id/event_detail_venue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/event_detail_venue"
-        app:layout_constraintTop_toBottomOf="@id/event_detail_date_label"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
 
 
 </android.support.constraint.ConstraintLayout>
