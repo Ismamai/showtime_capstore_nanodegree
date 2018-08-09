@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 int size = 0;
 
                 List<com.iblesa.api.models.Event> events = eventResponse.getEmbedded().getEvents();
-                if (eventResponse != null && events != null) {
+                if (events != null) {
                     size = events.size();
                 }
                 String message = String.format("Setting events (%s) %s", size, events);
