@@ -12,4 +12,17 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="DetailLabel">
+        <item name="android:textSize">24dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textStyle">bold</item>
+
+
+    </style>
+
+    <style name="DetailValue">
+        <item name="android:textSize">18dp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
 </resources>
