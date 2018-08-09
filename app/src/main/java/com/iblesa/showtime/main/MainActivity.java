@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSION_ACCESS_COARSE_LOCATION);
         }
-//        new GoogleApiClient.Builder(this,this,)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
