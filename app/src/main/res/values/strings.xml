@@ -15,4 +15,5 @@
     <string name="event_detail_segment_label">Segment</string>
     <string name="event_detail_genre_label">Genre</string>
     <string name="event_detail_subgenre_label">Subgenre</string>
+    <string name="venue_label">Venue</string>
 </resources>
