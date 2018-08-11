@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         Retrofit apiClient = ApiClient.getClient();
         ApiService service = apiClient.create(ApiService.class);
         String latlong = mLatitude + "," + mLongitude;
-        Call<EventResponse> listCall = null;
+        Call<EventResponse> listCall;
         listCall = service.listEvents(key, latlong);
         listCall.enqueue(new Callback<EventResponse>() {
             @Override
@@ -178,6 +178,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void populateDB(EventResponse eventResponse) {
+        int delete = getContentResolver().delete(EventContract.EventEntry.CONTENT_URI, null, null);
+        Log.d(Constants.TAG, "Deleted " + delete);
         for (Event event : eventResponse.getEmbedded().getEvents()) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(EventContract.EventEntry.COLUMN_EVENT_NAME, event.getName());

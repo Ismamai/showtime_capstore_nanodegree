@@ -96,7 +96,19 @@ public class EventContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = mEventDbHelper.getWritableDatabase();
+
+        int matchCode = sUriMatcher.match(uri);
+        int deleted;
+        switch (matchCode) {
+            case EVENTS:
+                deleted = db.delete(TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown URI: " + uri);
+
+        }
+        return deleted;
     }
 
     @Override
