@@ -137,24 +137,29 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                 if (response.isSuccessful()) {
 
-
                     mAdapter.clear();
                     EventResponse eventResponse = response.body();
                     int size = 0;
+                    List<com.iblesa.api.models.Event> events;
+                    if (eventResponse != null && eventResponse.getEmbedded() != null) {
+                        events = eventResponse.getEmbedded().getEvents();
+                        if (events != null) {
+                            size = events.size();
+                        }
 
-                    List<com.iblesa.api.models.Event> events = eventResponse.getEmbedded().getEvents();
-                    if (events != null) {
-                        size = events.size();
+                        String message = String.format("Setting events (%s) %s", size, events);
+                        Log.d(Constants.TAG, message);
+
+                        mAdapter.setEventResponse(eventResponse);
+                        mSwipeRefresh.setRefreshing(false);
+
+                        populateDB(eventResponse);
+
+                        restoreLayoutManagerPostion();
+                    } else {
+                        Toast.makeText(MainActivity.this, R.string.ERROR_NO_EVENTS, Toast.LENGTH_LONG).show();
+                        Log.e(Constants.TAG, getString(R.string.ERROR_NO_EVENTS));
                     }
-                    String message = String.format("Setting events (%s) %s", size, events);
-                    Log.d(Constants.TAG, message);
-
-                    mAdapter.setEventResponse(eventResponse);
-                    mSwipeRefresh.setRefreshing(false);
-
-                    populateDB(eventResponse);
-
-                    restoreLayoutManagerPostion();
                 } else {
                     APIError apiError = ErrorUtils.parseError(response);
                     String fault = null;
