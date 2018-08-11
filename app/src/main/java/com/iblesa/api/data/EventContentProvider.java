@@ -1,15 +1,16 @@
 package com.iblesa.api.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.iblesa.api.models.Event;
 
 public class EventContentProvider extends ContentProvider {
     private EventDbHelper mEventDbHelper;
@@ -50,7 +51,27 @@ public class EventContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        final SQLiteDatabase db = mEventDbHelper.getWritableDatabase();
+
+        int matchCode = sUriMatcher.match(uri);
+        Uri returnURI;
+        switch (matchCode) {
+            case EVENTS:
+                long id = db.insert(EventContract.EventEntry.TABLE_NAME, null, values);
+                if (id > 0) {
+                    returnURI = ContentUris.withAppendedId(EventContract.EventEntry.CONTENT_URI, id);
+                } else {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown URI: " + uri);
+
+        }
+        //Notify the resolver that the uri has changed
+        getContext().getContentResolver().notifyChange(returnURI, null);
+
+        return returnURI;
     }
 
     @Override
