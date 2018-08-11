@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import static com.iblesa.api.data.EventContract.EventEntry.TABLE_NAME;
+
 public class EventContentProvider extends ContentProvider {
     private EventDbHelper mEventDbHelper;
 
@@ -39,7 +41,25 @@ public class EventContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        final SQLiteDatabase db = mEventDbHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+        switch (match) {
+            case EVENTS:
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown URI: " + uri);
+
+        }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Nullable
@@ -57,7 +77,7 @@ public class EventContentProvider extends ContentProvider {
         Uri returnURI;
         switch (matchCode) {
             case EVENTS:
-                long id = db.insert(EventContract.EventEntry.TABLE_NAME, null, values);
+                long id = db.insert(TABLE_NAME, null, values);
                 if (id > 0) {
                     returnURI = ContentUris.withAppendedId(EventContract.EventEntry.CONTENT_URI, id);
                 } else {
