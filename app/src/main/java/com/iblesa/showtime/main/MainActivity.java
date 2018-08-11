@@ -28,6 +28,7 @@ import com.iblesa.api.models.EventResponse;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -123,31 +124,48 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         Retrofit apiClient = ApiClient.getClient();
         ApiService service = apiClient.create(ApiService.class);
         String latlong = mLatitude + "," + mLongitude;
-        Call<EventResponse> listCall = service.listEvents(key, latlong);
+        Call<EventResponse> listCall = null;
+        listCall = service.listEvents(key, latlong);
         listCall.enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
-                mAdapter.clear();
-                EventResponse eventResponse = response.body();
-                int size = 0;
+                if (response.isSuccessful()) {
 
-                List<com.iblesa.api.models.Event> events = eventResponse.getEmbedded().getEvents();
-                if (events != null) {
-                    size = events.size();
+
+                    mAdapter.clear();
+                    EventResponse eventResponse = response.body();
+                    int size = 0;
+
+                    List<com.iblesa.api.models.Event> events = eventResponse.getEmbedded().getEvents();
+                    if (events != null) {
+                        size = events.size();
+                    }
+                    String message = String.format("Setting events (%s) %s", size, events);
+                    Log.d(Constants.TAG, message);
+
+                    mAdapter.setEventResponse(eventResponse);
+                    mSwipeRefresh.setRefreshing(false);
+
+                    restoreLayoutManagerPostion();
+                } else {
+                    String error = getString(R.string.ERROR_CONTACTING_SERVER, response.code());
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_LONG).show();
+                    String errorResponse;
+                    try {
+                        errorResponse = response.errorBody().string();
+                        Log.e(Constants.TAG, error + errorResponse);
+                    } catch (IOException e) {
+                        Log.e(Constants.TAG, error, e);
+                    }
+
                 }
-                String message = String.format("Setting events (%s) %s", size, events);
-                Log.d(Constants.TAG, message);
-
-                mAdapter.setEventResponse(eventResponse);
-                mSwipeRefresh.setRefreshing(false);
-
-                restoreLayoutManagerPostion();
 
             }
 
             @Override
             public void onFailure(Call<EventResponse> call, Throwable t) {
                 String error = getString(R.string.ERROR_LOADING_DATA);
+                Log.e(Constants.TAG, error, t);
                 showError(error);
             }
         });

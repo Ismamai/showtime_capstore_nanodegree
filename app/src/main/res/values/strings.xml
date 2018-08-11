@@ -16,4 +16,5 @@
     <string name="event_detail_genre_label">Genre</string>
     <string name="event_detail_subgenre_label">Subgenre</string>
     <string name="venue_label">Venue</string>
+    <string name="ERROR_CONTACTING_SERVER">There has been an error while connecting to the server. Error code %d</string>
 </resources>
