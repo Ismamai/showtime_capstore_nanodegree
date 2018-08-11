@@ -1,11 +1,13 @@
 package com.iblesa.showtime.main;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -24,13 +26,15 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.iblesa.api.ApiClient;
 import com.iblesa.api.ApiService;
+import com.iblesa.api.data.EventContract;
 import com.iblesa.api.error.APIError;
 import com.iblesa.api.error.ErrorUtils;
+import com.iblesa.api.models.Event;
 import com.iblesa.api.models.EventResponse;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
+import com.iblesa.util.EventExtractor;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -148,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     mAdapter.setEventResponse(eventResponse);
                     mSwipeRefresh.setRefreshing(false);
 
+                    populateDB(eventResponse);
+
                     restoreLayoutManagerPostion();
                 } else {
                     APIError apiError = ErrorUtils.parseError(response);
@@ -169,6 +175,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 showError(error);
             }
         });
+    }
+
+    private void populateDB(EventResponse eventResponse) {
+        for (Event event : eventResponse.getEmbedded().getEvents()) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(EventContract.EventEntry.COLUMN_EVENT_NAME, event.getName());
+            contentValues.put(EventContract.EventEntry.COLUMN_EVENT_DATE, EventExtractor.getDate(event).getLocalDate());
+            contentValues.put(EventContract.EventEntry.COLUMN_EVENT_VENUE, EventExtractor.getVenue(event).getName());
+
+            Uri uri = getContentResolver().insert(EventContract.EventEntry.CONTENT_URI, contentValues);
+        }
     }
 
     private void restoreLayoutManagerPostion() {
