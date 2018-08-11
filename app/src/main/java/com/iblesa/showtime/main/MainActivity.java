@@ -24,6 +24,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.iblesa.api.ApiClient;
 import com.iblesa.api.ApiService;
+import com.iblesa.api.error.APIError;
+import com.iblesa.api.error.ErrorUtils;
 import com.iblesa.api.models.EventResponse;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
@@ -148,16 +150,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     restoreLayoutManagerPostion();
                 } else {
-                    String error = getString(R.string.ERROR_CONTACTING_SERVER, response.code());
-                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_LONG).show();
-                    String errorResponse;
-                    try {
-                        errorResponse = response.errorBody().string();
-                        Log.e(Constants.TAG, error + errorResponse);
-                    } catch (IOException e) {
-                        Log.e(Constants.TAG, error, e);
+                    APIError apiError = ErrorUtils.parseError(response);
+                    String fault = null;
+                    if (apiError.getFault() != null && apiError.getFault().getFaultstring() != null) {
+                        fault = apiError.getFault().getFaultstring();
                     }
-
+                    String error = getString(R.string.ERROR_CONTACTING_SERVER, response.code(), fault);
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_LONG).show();
+                    Log.e(Constants.TAG, error);
                 }
 
             }
