@@ -72,7 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         Location eventVenueLocation = eventVenue.getLocation();
         final String location = "geo:" + eventVenueLocation.getLatitude()
                 +","+eventVenueLocation.getLongitude()+"?q="+eventVenue.getName();
-        Start dates = event.getDates().getStart();
+        Start dates = EventExtractor.getDate(event);
         String localDate = dates.getLocalDate();
         String localTime = dates.getLocalTime();
 

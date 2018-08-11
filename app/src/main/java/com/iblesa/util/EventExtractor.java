@@ -1,8 +1,10 @@
 package com.iblesa.util;
 
+import com.iblesa.api.models.Dates;
 import com.iblesa.api.models.Embedded_;
 import com.iblesa.api.models.Event;
 import com.iblesa.api.models.Image;
+import com.iblesa.api.models.Start;
 import com.iblesa.api.models.Venue_;
 
 import java.util.List;
@@ -33,6 +35,17 @@ public class EventExtractor {
             }
         }
         return smaller_image;
+    }
+
+    public static Start getDate(Event event) {
+        Start resultDate = null;
+        if (event.getDates() != null) {
+            Dates dates = event.getDates();
+            if (dates.getStart() != null) {
+                resultDate = dates.getStart();
+            }
+        }
+        return resultDate;
     }
 
 }
