@@ -28,6 +28,12 @@ public class ShowtimeWidget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0, intent,0);
         views.setOnClickPendingIntent(R.id.appwidget_title, pendingIntent);
 
+
+        Intent gridViewIntent = new Intent(context, GridWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_grid_view, gridViewIntent);
+        views.setEmptyView(R.id.widget_grid_view, R.id.widget_empty_view);
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_grid_view);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -35,6 +41,12 @@ public class ShowtimeWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
+    }
+
+    public static void updateWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }

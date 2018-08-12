@@ -18,7 +18,7 @@
         <provider
             android:name="com.iblesa.api.data.EventContentProvider"
             android:authorities="com.iblesa.showtime"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity android:name=".main.MainActivity">
             <intent-filter>
@@ -27,11 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".detail.DetailActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+        </activity>
 
         <receiver android:name="com.iblesa.widget.ShowtimeWidget">
             <intent-filter>
@@ -42,6 +44,9 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/showtime_widget_info" />
         </receiver>
+        <service
+            android:name="com.iblesa.widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

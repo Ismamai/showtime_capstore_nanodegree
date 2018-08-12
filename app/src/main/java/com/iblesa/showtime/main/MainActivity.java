@@ -1,6 +1,8 @@
 package com.iblesa.showtime.main;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -34,6 +36,7 @@ import com.iblesa.api.models.EventResponse;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
 import com.iblesa.util.EventExtractor;
+import com.iblesa.widget.ShowtimeWidget;
 
 import java.util.List;
 
@@ -191,8 +194,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             contentValues.put(EventContract.EventEntry.COLUMN_EVENT_DATE, EventExtractor.getDate(event).getLocalDate());
             contentValues.put(EventContract.EventEntry.COLUMN_EVENT_VENUE, EventExtractor.getVenue(event).getName());
 
-            Uri uri = getContentResolver().insert(EventContract.EventEntry.CONTENT_URI, contentValues);
+            getContentResolver().insert(EventContract.EventEntry.CONTENT_URI, contentValues);
         }
+
+        // Update widgets
+        Context context = getApplicationContext();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, ShowtimeWidget.class));
+        //Trigger data update to handle the GridView widgets and force a data refresh
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
+        ShowtimeWidget.updateWidgets(context, appWidgetManager, appWidgetIds);
     }
 
     private void restoreLayoutManagerPostion() {
