@@ -1,6 +1,7 @@
 package com.iblesa.api.data;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +19,7 @@ public class EventContentProvider extends ContentProvider {
     private EventDbHelper mEventDbHelper;
 
     private static final int EVENTS = 100;
+    private static final int EVENT_WITH_ID = 110;
 
     public static final UriMatcher sUriMatcher = buildUtiMatcher();
 
@@ -26,6 +28,7 @@ public class EventContentProvider extends ContentProvider {
 
         //List all events
         uriMatcher.addURI(EventContract.AUTHORITY, EventContract.PATH_EVENTS, EVENTS);
+        uriMatcher.addURI(EventContract.AUTHORITY, EventContract.PATH_EVENTS + "/*", EVENT_WITH_ID);
 
         return uriMatcher;
     }
@@ -53,6 +56,20 @@ public class EventContentProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
+                retCursor.setNotificationUri(getContentResolver(), uri);
+                break;
+            case EVENT_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                String mSelection = "_id=?";
+                String[] mSelectionArg = new String[]{id};
+                retCursor = db.query(TABLE_NAME,
+                        null,
+                        mSelection,
+                        mSelectionArg,
+                        null,
+                        null,
+                        sortOrder);
+                retCursor.setNotificationUri(getContentResolver(), uri);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown URI: " + uri);
@@ -114,5 +131,14 @@ public class EventContentProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    private ContentResolver getContentResolver() {
+        Context context = getContext();
+        if (context != null) {
+            return context.getContentResolver();
+        } else {
+            throw new IllegalStateException(("getContext is null"));
+        }
     }
 }
