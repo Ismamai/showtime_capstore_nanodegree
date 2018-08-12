@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -40,25 +38,14 @@ public class GridWidgetService extends RemoteViewsService {
             if (mCursor != null) {
                 mCursor.close();
             }
-//            AsyncTaskLoader<Cursor> loader = new AsyncTaskLoader<Cursor>(mContext) {
-//                @Nullable
-//                @Override
-//                public Cursor loadInBackground() {
             Uri EVENTS_URI = EventContract.EventEntry.CONTENT_URI;
-            Cursor result;
             try {
-                result = mContext.getContentResolver().query(EVENTS_URI, null, null, null, null);
+                mCursor = mContext.getContentResolver().query(EVENTS_URI, null, null, null, null);
             } catch (Exception e) {
                 Log.e(Constants.TAG, "Failed to asynchronously load data.");
                 e.printStackTrace();
-                result = null;
+                mCursor = null;
             }
-//                    return result;
-//                }
-//            };
-//
-//            mCursor = loader.loadInBackground();
-            mCursor = result;
 
         }
 
