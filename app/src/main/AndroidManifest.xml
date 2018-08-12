@@ -15,10 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <provider
-            android:authorities="com.iblesa.showtime"
             android:name="com.iblesa.api.data.EventContentProvider"
+            android:authorities="com.iblesa.showtime"
             android:exported="false" />
 
         <activity android:name=".main.MainActivity">
@@ -31,9 +30,18 @@
         <activity
             android:name=".detail.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".main.MainActivity">
-        </activity>
+            android:parentActivityName=".main.MainActivity"
+            android:theme="@style/AppTheme"></activity>
+
+        <receiver android:name="com.iblesa.widget.ShowtimeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/showtime_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
