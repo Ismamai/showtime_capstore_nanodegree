@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'nanodegree'
             keyPassword 'nanodegree'
-            storeFile file('/Users/iblesa/dev/projects/udacity/androidStudio/Showtime/keystore.jks')
+            storeFile file('keystore.jks')
             storePassword 'nanodegree'
         }
     }
