@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final String LAST_LOCATION_LATITUDE = "LATITUDE";
     private static final String LAST_LOCATION_LOGITUDE = "LONGITUDE";
     private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
-    private static boolean locationEnabled = false;
     private double mLatitude = Constants.DEFAULT_LOCATION_LAT;
     private double mLongitude = Constants.DEFAULT_LOCATION_LON;
 
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             case PERMISSION_ACCESS_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Location granted
-                    locationEnabled = true;
                     loadData();
                 } else {
                     Toast.makeText(this, R.string.LOCATION_IS_REQUIRED, Toast.LENGTH_LONG).show();
