@@ -1,6 +1,10 @@
 package com.iblesa.api.data;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Log;
+
+import com.iblesa.showtime.Constants;
 
 public class EventData {
     private String id;
@@ -90,5 +94,25 @@ public class EventData {
         contentValues.put(EventContract.EventEntry.COLUMN_EVENT_IMAGE, data.getImage());
 
         return contentValues;
+    }
+
+    public static EventData fromCursor(Cursor cursor) {
+        if (cursor.getCount() == 1 && cursor.moveToFirst()) {
+            String id = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry._ID));
+            String name = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_NAME));
+            String date = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_DATE));
+            String time = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_TIME));
+            String venueName = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_VENUE));
+            String venueLat = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_VENUE_LAT));
+            String venueLong = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_VENUE_LONG));
+            String genre = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_GENRE));
+            String subgenre = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_SUBGENRE));
+            String segment = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_SEGMENT));
+            String image = cursor.getString(cursor.getColumnIndex(EventContract.EventEntry.COLUMN_EVENT_IMAGE));
+            return new EventData(id, name, date, time, venueName,
+                    venueLat, venueLong, genre, subgenre, segment, image);
+        }
+        Log.e(Constants.TAG, "Error retrieving EventData from Cursor");
+        return null;
     }
 }
