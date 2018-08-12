@@ -21,8 +21,17 @@ public class EventContract {
                 .build();
 
         public static final String TABLE_NAME = "events";
+
         public static final String COLUMN_EVENT_NAME= "name";
         public static final String COLUMN_EVENT_DATE= "date";
+        public static final String COLUMN_EVENT_TIME= "time";
         public static final String COLUMN_EVENT_VENUE= "venue";
+        public static final String COLUMN_EVENT_VENUE_LAT= "lat";
+        public static final String COLUMN_EVENT_VENUE_LONG= "long";
+        public static final String COLUMN_EVENT_GENRE= "genre";
+        public static final String COLUMN_EVENT_SUBGENRE = "subgenre";
+        public static final String COLUMN_EVENT_SEGMENT= "segment";
+        public static final String COLUMN_EVENT_IMAGE= "image";
+
     }
 }

@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.iblesa.api.ApiClient;
 import com.iblesa.api.ApiService;
 import com.iblesa.api.data.EventContract;
+import com.iblesa.api.data.EventData;
 import com.iblesa.api.error.APIError;
 import com.iblesa.api.error.ErrorUtils;
 import com.iblesa.api.models.Event;
@@ -189,10 +190,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         int delete = getContentResolver().delete(EventContract.EventEntry.CONTENT_URI, null, null);
         Log.d(Constants.TAG, "Deleted " + delete);
         for (Event event : eventResponse.getEmbedded().getEvents()) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(EventContract.EventEntry.COLUMN_EVENT_NAME, event.getName());
-            contentValues.put(EventContract.EventEntry.COLUMN_EVENT_DATE, EventExtractor.getDate(event).getLocalDate());
-            contentValues.put(EventContract.EventEntry.COLUMN_EVENT_VENUE, EventExtractor.getVenue(event).getName());
+            EventData eventData = EventExtractor.extractEventData(event);
+            EventData.toContentValues(eventData);
+            ContentValues contentValues = EventData.toContentValues(eventData);
+
 
             getContentResolver().insert(EventContract.EventEntry.CONTENT_URI, contentValues);
         }
