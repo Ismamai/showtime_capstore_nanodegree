@@ -3,8 +3,11 @@ package com.iblesa.showtime.detail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,19 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.iblesa.api.models.Classification;
-import com.iblesa.api.models.Event;
-import com.iblesa.api.models.Location;
-import com.iblesa.api.models.Start;
-import com.iblesa.api.models.Venue_;
+import com.iblesa.api.data.EventData;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
-import com.iblesa.util.EventExtractor;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,61 +49,76 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.event_detail_subgenre)
     TextView mEventSubgenre;
 
+    private static final int EVENT_LOADER_ID = 11;
+
+    private LoaderManager.LoaderCallbacks<EventData> eventLoader = new LoaderManager.LoaderCallbacks<EventData>() {
+
+        @NonNull
+        @Override
+        public android.support.v4.content.Loader<EventData> onCreateLoader(int id, @Nullable Bundle args) {
+            String eventID = args.getString(Constants.LOADER_PARAM_EVENT_ID);
+
+            return new EventLoader(getApplicationContext(), eventID);
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull android.support.v4.content.Loader<EventData> loader, EventData data) {
+            populateUI(data);
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull android.support.v4.content.Loader<EventData> loader) {
+
+        }
+
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        Event event = getIntent().getParcelableExtra(Constants.EVENT_PARCEL);
-        String image = EventExtractor.getImage(event);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+        String eventId = getIntent().getStringExtra(Constants.EVENT_ID);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(Constants.LOADER_PARAM_EVENT_ID, eventId);
+
+        getSupportLoaderManager().initLoader(EVENT_LOADER_ID, queryBundle, eventLoader);
+    }
+
+    @NonNull
+    private void populateUI(EventData event) {
         Picasso.get()
-                .load(image)
+                .load(event.getImage())
                 .placeholder(R.drawable.progress_image)
                 .error(R.drawable.progress_image)
                 .into(mEventImage);
-        String eventName = event.getName();
-        mEventName.setText(eventName);
-        Venue_ eventVenue = EventExtractor.getVenue(event);
-        mEventVenue.setText(eventVenue.getName());
-        Location eventVenueLocation = eventVenue.getLocation();
-        final String location = "geo:" + eventVenueLocation.getLatitude()
-                +","+eventVenueLocation.getLongitude()+"?q="+eventVenue.getName();
-        Start dates = EventExtractor.getDate(event);
-        String localDate = dates.getLocalDate();
-        String localTime = dates.getLocalTime();
+        mEventName.setText(event.getName());
+        mEventVenue.setText(event.getVenueName());
+        final String location = "geo:" + event.getVenueLat()
+                + "," + event.getVenueLong() + "?q=" + event.getVenueName();
 
         StringBuilder date = new StringBuilder();
-        if (!StringUtils.isEmpty(localDate)) {
-            date.append(localDate);
+        if (!StringUtils.isEmpty(event.getDate())) {
+            date.append(event.getDate());
         }
-        if (!StringUtils.isEmpty(localTime)) {
-            date.append(" at ").append(localTime);
+        if (!StringUtils.isEmpty(event.getTime())) {
+            date.append(" at ").append(event.getTime());
         }
 
         mEventDate.setText(date.toString());
+        mEventSegment.setText(event.getSegment());
+        mEventGenre.setText(event.getGenre());
+        mEventSubgenre.setText(event.getSubgenre());
 
-        List<Classification> classifications = event.getClassifications();
-
-        String genre = null;
-        String segment = null;
-        String subGenre = null;
-        if (classifications.size() > 0) {
-            Classification classification = classifications.get(0);
-            segment = classification.getSegment().getName();
-            mEventSegment.setText(segment);
-
-            genre = classification.getGenre().getName();
-            mEventGenre.setText(genre);
-
-            subGenre = classification.getSubGenre().getName();
-            mEventSubgenre.setText(subGenre);
-
-        }
-        String message = String.format("Genre: %s \nSubgenre: %s \nSegment %s", genre, subGenre, segment);
+        String message = String.format("Genre: %s \nSubgenre: %s \nSegment %s",
+                event.getGenre(), event.getSubgenre(), event.getSegment());
         Log.d(Constants.TAG, message);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

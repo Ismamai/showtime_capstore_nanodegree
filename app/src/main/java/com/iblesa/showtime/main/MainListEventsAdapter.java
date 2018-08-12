@@ -112,7 +112,7 @@ public class MainListEventsAdapter extends RecyclerView.Adapter<MainListEventsAd
                     event);
             //Open detail activity
             Intent detailActivity = new Intent(mContext, DetailActivity.class);
-            detailActivity.putExtra(Constants.EVENT_PARCEL, event);
+            detailActivity.putExtra(Constants.EVENT_ID, event.getId());
             mContext.startActivity(detailActivity);
         }
     }
