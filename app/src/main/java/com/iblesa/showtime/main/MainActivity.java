@@ -97,6 +97,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSION_ACCESS_COARSE_LOCATION);
+        } else {
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        mLatitude = location.getLatitude();
+                        mLongitude = location.getLongitude();
+                        String message = String.format("My location is latitude %s and longitude %s", mLatitude, mLongitude);
+                        Log.d(Constants.TAG, message);
+                    } else {
+                        Log.d(Constants.TAG, "Using default location");
+                    }
+                    loadData();
+                }
+            });
         }
     }
 
@@ -107,24 +123,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Location granted
                     locationEnabled = true;
-                    FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                mLatitude = location.getLatitude();
-                                mLongitude = location.getLongitude();
-                                String message = String.format("My location is latitude %s and longitude %s", mLatitude, mLongitude);
-                                Log.d(Constants.TAG, message);
-                            } else {
-                                Log.d(Constants.TAG, "Using default location");
-                            }
-                            loadData();
-                        }
-                    });
+                    loadData();
                 } else {
                     Toast.makeText(this, R.string.LOCATION_IS_REQUIRED, Toast.LENGTH_LONG).show();
                     if (mSwipeRefresh.isRefreshing()) {
