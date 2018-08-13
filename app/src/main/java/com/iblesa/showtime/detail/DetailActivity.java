@@ -2,6 +2,7 @@ package com.iblesa.showtime.detail;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.iblesa.api.data.EventData;
 import com.iblesa.showtime.Constants;
 import com.iblesa.showtime.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -92,12 +94,10 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private void populateUI(EventData event) {
-        Picasso.get()
-                .load(event.getImage())
-                .placeholder(R.drawable.progress_image)
-                .error(R.drawable.progress_image)
-                .into(mEventImage);
+    private void populateUI(final EventData event) {
+
+        new AsyncTaskImage(event, mEventImage).execute();
+
         mEventName.setText(event.getName());
         mEventVenue.setText(event.getVenueName());
         final String location = "geo:" + event.getVenueLat()
@@ -133,5 +133,32 @@ public class DetailActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    class AsyncTaskImage extends AsyncTask<Void, Void, Void> {
+        private EventData eventData;
+        private ImageView imageView;
+        RequestCreator creator;
+
+        AsyncTaskImage(EventData eventData, ImageView imageView) {
+            this.eventData = eventData;
+
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            creator = Picasso.get()
+                    .load(eventData.getImage())
+                    .placeholder(R.drawable.progress_image)
+                    .error(R.drawable.progress_image);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            creator.into(imageView);
+
+        }
     }
 }
