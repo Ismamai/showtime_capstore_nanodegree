@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -100,8 +101,16 @@ public class DetailActivity extends AppCompatActivity {
 
         mEventName.setText(event.getName());
         mEventVenue.setText(event.getVenueName());
-        final String location = "geo:" + event.getVenueLat()
-                + "," + event.getVenueLong() + "?q=" + event.getVenueName();
+        String venueLat = event.getVenueLat();
+        if (TextUtils.isEmpty(venueLat)) {
+            venueLat="0";
+        }
+        String venueLong = event.getVenueLong();
+        if (TextUtils.isEmpty(venueLong)) {
+            venueLong="0";
+        }
+        final String location = "geo:" + venueLat
+                + "," + venueLong + "?q=" + event.getVenueName();
 
         StringBuilder date = new StringBuilder();
         if (!StringUtils.isEmpty(event.getDate())) {
