@@ -23,13 +23,13 @@ public class EventDbHelper extends SQLiteOpenHelper {
                 EventEntry.COLUMN_EVENT_NAME + " TEXT NOT NULL," +
                 EventEntry.COLUMN_EVENT_DATE + " TEXT ," +
                 EventEntry.COLUMN_EVENT_TIME + " TEXT ," +
-                EventEntry.COLUMN_EVENT_VENUE + " TEXT NOT NULL," +
+                EventEntry.COLUMN_EVENT_VENUE + " TEXT ," +
                 EventEntry.COLUMN_EVENT_VENUE_LAT + " TEXT ," +
                 EventEntry.COLUMN_EVENT_VENUE_LONG + " TEXT ," +
-                EventEntry.COLUMN_EVENT_GENRE + " TEXT NOT NULL," +
-                EventEntry.COLUMN_EVENT_SUBGENRE + " TEXT NOT NULL," +
-                EventEntry.COLUMN_EVENT_SEGMENT + " TEXT NOT NULL," +
-                EventEntry.COLUMN_EVENT_IMAGE + " TEXT NOT NULL" +
+                EventEntry.COLUMN_EVENT_GENRE + " TEXT ," +
+                EventEntry.COLUMN_EVENT_SUBGENRE + " TEXT ," +
+                EventEntry.COLUMN_EVENT_SEGMENT + " TEXT ," +
+                EventEntry.COLUMN_EVENT_IMAGE + " TEXT " +
                 ");";
         db.execSQL(SQL_CREATE_EVENT_TABLE);
     }
