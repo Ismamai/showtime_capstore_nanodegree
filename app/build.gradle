@@ -54,4 +54,7 @@ dependencies {
     //Added these libraries to resolve possible conflict with indirect dependencies
     implementation "com.android.support:support-annotations:$androidSupportVersion"
     implementation "com.android.support:exifinterface:$androidSupportVersion"
+
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+
 }

@@ -21,4 +21,6 @@
     <string name="appwidget_title">Events around</string>
     <string name="add_widget">Add widget</string>
     <string name="widget_empty_view_message">Please open the app to load events.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

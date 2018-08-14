@@ -147,5 +147,4 @@
         app:layout_constraintStart_toEndOf="@id/barrier"
         app:layout_constraintTop_toBottomOf="@id/event_detail_subgenre_label" />
 
-
 </android.support.constraint.ConstraintLayout>
