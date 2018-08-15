@@ -141,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
+    /**
+     * Trigger data load from remote api.
+     */
     private void loadData() {
         String key = getString(R.string.ticketmaster_api_key);
         checkConnectivity();
@@ -199,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
+    /**
+     * Populates the database with the data extracte from EventReponse coming from TicketMaster API
+     * @param eventResponse contains response from TicketMaster API
+     */
     private void populateDB(EventResponse eventResponse) {
         int delete = getContentResolver().delete(EventContract.EventEntry.CONTENT_URI, null, null);
         Log.d(Constants.TAG, "Deleted " + delete);
@@ -228,6 +235,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
+    /**
+     * Checks that there is internet connectivity before trying to use internet connection
+     */
     private void checkConnectivity() {
         ConnectivityManager cm =
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
